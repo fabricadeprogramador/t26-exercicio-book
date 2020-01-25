@@ -14,7 +14,13 @@
           :items="arrCategorias"
           :items-per-page="5"
           class="elevation-1"
-        ></v-data-table>
+        >
+          <template v-slot:item.action="{ item }">
+            <v-icon small class="mr-2" @click="deleteCategoria(item)"
+              >mdi-delete</v-icon
+            >
+          </template>
+        </v-data-table>
       </v-col>
     </v-row>
 
@@ -35,6 +41,12 @@ export default {
           align: "left",
           sortable: true,
           value: "descricao"
+        },
+        {
+          text: "Ações",
+          value: "action",
+          sortable: false,
+          align: "right"
         }
       ],
 
@@ -45,6 +57,20 @@ export default {
     };
   },
   methods: {
+    deleteCategoria(item) {
+      axios
+        .delete("http://localhost:3000/categoria/" + item._id)
+        .then(response => {
+          let index = this.arrCategorias.indexOf(item);
+          this.arrCategorias.splice(index, 1);
+
+          this.mensagem.texto = response.data;
+          this.snackbar = true;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     listar() {
       axios
         .get("http://localhost:3000/categoria")
