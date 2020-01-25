@@ -1,0 +1,4 @@
+.DS_Store
+.vscode/
+admin/node_modules/
+api/node_modules/ 
