@@ -23,7 +23,7 @@ class CategoriaController {
     static async alterar(req, res) {
 
         //Leitura dos dados em Json
-        let id = req.body.id
+        let id = req.body._id
 
         var cat = {
             descricao: req.body.descricao

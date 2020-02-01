@@ -3,7 +3,9 @@
     <v-row>
       <v-col cols="12" md="4">
         <v-text-field v-model="categoria.descricao"></v-text-field>
-        <v-btn @click="salvar()">Salvar</v-btn>
+
+        <v-btn @click="salvar()">Salvar</v-btn>&nbsp;
+        <v-btn @click="cancelarEditar()">Cancelar</v-btn>
       </v-col>
     </v-row>
 
@@ -17,6 +19,7 @@
         >
           <template v-slot:item.action="{ item }">
             <v-icon small class="mr-2" @click="desejaDeletar(item)">mdi-delete</v-icon>
+            <v-icon small class="mr-2" @click="desejaEditar(item)">mdi-pencil</v-icon>
           </template>
         </v-data-table>
       </v-col>
@@ -65,10 +68,20 @@ export default {
       arrCategorias: [],
       mensagem: { texto: "" },
       dialog: false,
-      itemADeletar: {}
+      itemADeletar: {},
+      modoEdicao: false
     };
   },
   methods: {
+    desejaEditar(item) {
+      this.categoria = item;
+      this.modoEdicao = true;
+    },
+    cancelarEditar() {
+      this.categoria = {};
+      this.modoEdicao = false;
+    },
+
     desejaDeletar(item) {
       this.itemADeletar = item;
       this.dialog = true;
@@ -112,17 +125,32 @@ export default {
 
     salvar() {
       //mandar pra API
+      if (this.modoEdicao == true) {
+        //editacao -PUT
 
-      axios
-        .post("http://localhost:3000/categoria", this.categoria)
-        .then(response => {
-          this.mensagem.texto = response.data;
-          this.snackbar = true;
-          this.listar();
-        })
-        .catch(error => {
-          console.log(error);
-        });
+        axios
+          .put("http://localhost:3000/categoria", this.categoria)
+          .then(response => {
+            this.mensagem.texto = response.data;
+            this.snackbar = true;
+            this.listar();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        //cadastrar = POST
+        axios
+          .post("http://localhost:3000/categoria", this.categoria)
+          .then(response => {
+            this.mensagem.texto = response.data;
+            this.snackbar = true;
+            this.listar();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
 
       this.categoria = {};
     }
