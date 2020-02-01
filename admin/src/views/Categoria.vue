@@ -127,7 +127,7 @@ export default {
       //mandar pra API
       if (this.modoEdicao == true) {
         //editacao -PUT
-
+        //
         axios
           .put("http://localhost:3000/categoria", this.categoria)
           .then(response => {
