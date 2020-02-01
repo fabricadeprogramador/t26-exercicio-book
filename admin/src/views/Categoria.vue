@@ -16,9 +16,7 @@
           class="elevation-1"
         >
           <template v-slot:item.action="{ item }">
-            <v-icon small class="mr-2" @click="deleteCategoria(item)"
-              >mdi-delete</v-icon
-            >
+            <v-icon small class="mr-2" @click="desejaDeletar(item)">mdi-delete</v-icon>
           </template>
         </v-data-table>
       </v-col>
@@ -28,6 +26,18 @@
       {{ mensagem.texto }}
       <v-btn color="indigo" text @click="snackbar = false">Fechar</v-btn>
     </v-snackbar>
+
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card>
+        <v-card-title>Confirmação</v-card-title>
+        <v-card-text>Deseja realmente remover o registro?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" @click="cancelarDeletar()">Não</v-btn>
+          <v-btn color="green darken-1" @click="confirmarDeletar()">Sim</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -53,10 +63,28 @@ export default {
       snackbar: false,
       categoria: {},
       arrCategorias: [],
-      mensagem: { texto: "" }
+      mensagem: { texto: "" },
+      dialog: false,
+      itemADeletar: {}
     };
   },
   methods: {
+    desejaDeletar(item) {
+      this.itemADeletar = item;
+      this.dialog = true;
+    },
+
+    cancelarDeletar() {
+      this.dialog = false;
+      this.itemADeletar = {};
+    },
+
+    confirmarDeletar() {
+      this.dialog = false;
+      this.deleteCategoria(this.itemADeletar);
+      this.itemADeletar = {};
+    },
+
     deleteCategoria(item) {
       axios
         .delete("http://localhost:3000/categoria/" + item._id)
