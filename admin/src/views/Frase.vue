@@ -14,6 +14,17 @@
         <v-btn @click="salvar()">Salvar</v-btn>
       </v-col>
     </v-row>
+
+    <v-row>
+      <v-col>
+        <v-data-table :headers="headers" :items="arrFrases" :items-per-page="5" class="elevation-1">
+          <template v-slot:item.action="{ item }">
+            <v-icon small class="mr-2" @click="desejaDeletar(item)">mdi-delete</v-icon>
+            <v-icon small class="mr-2" @click="desejaEditar(item)">mdi-pencil</v-icon>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -24,7 +35,29 @@ export default {
   data() {
     return {
       frase: {},
-      arrCategorias: []
+      arrFrases: [],
+      arrCategorias: [],
+
+      headers: [
+        {
+          text: "Categoria",
+          align: "left",
+          sortable: true,
+          value: "categoria"
+        },
+        {
+          text: "Descrição",
+          align: "left",
+          sortable: true,
+          value: "descricao"
+        },
+        {
+          text: "Ações",
+          value: "action",
+          sortable: false,
+          align: "right"
+        }
+      ]
     };
   },
   methods: {
@@ -49,11 +82,22 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    buscarFrases() {
+      axios
+        .get("http://localhost:3000/frase")
+        .then(response => {
+          this.arrFrases = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
 
   mounted() {
     this.buscarCategorias();
+    this.buscarFrases();
   }
 };
 </script>
