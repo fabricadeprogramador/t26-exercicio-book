@@ -43,7 +43,7 @@ export default {
           text: "Categoria",
           align: "left",
           sortable: true,
-          value: "categoria"
+          value: "categoria.descricao"
         },
         {
           text: "Descrição",
@@ -84,8 +84,9 @@ export default {
         });
     },
     buscarFrases() {
+      let vm = this;
       axios
-        .get("http://localhost:3000/frase")
+        .get("http://localhost:3000/frase/comcategoria")
         .then(response => {
           this.arrFrases = response.data;
         })

@@ -8,6 +8,11 @@ class FraseController {
         res.json(lista)
     }
 
+    static async listarTodosComCategoria(req, res) {
+        let lista = await fraseModel.find({}).populate("categoria")
+        res.json(lista)
+    }
+
     static async buscarPorId(req, res) {
         let frase = await fraseModel.findById({
             _id: req.params.id

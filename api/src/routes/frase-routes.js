@@ -6,6 +6,10 @@ const FraseController = require('../controllers/frase-controller')
 //Lista Todas de Frases
 router.get("/", FraseController.listarTodos)
 
+//Lista Todas de Frases com Categoria Populada
+router.get("/comcategoria", FraseController.listarTodosComCategoria)
+
+
 //Busca por Frase pelo ID
 router.get("/:id", FraseController.buscarPorId)
 
