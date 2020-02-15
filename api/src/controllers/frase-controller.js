@@ -38,15 +38,19 @@ class FraseController {
     static async alterar(req, res) {
 
         //Leitura dos dados em Json
-        let id = req.body.id
+        let id = req.body._id
 
-        var cat = {
-            descricao: req.body.descricao
+        //Frase com a nova descrição
+        var fra = {
+            descricao: req.body.descricao,
+            categoria: new ObjectId(req.body.categoria._id)
         }
 
+
+        //Alteração
         await fraseModel.findByIdAndUpdate({
             _id: id
-        }, cat)
+        }, fra)
 
         res.send('Alterado com sucesso ')
 

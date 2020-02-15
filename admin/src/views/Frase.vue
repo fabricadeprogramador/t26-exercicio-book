@@ -5,6 +5,7 @@
         <v-select
           item-text="descricao"
           item-value="_id"
+          return-object
           :items="arrCategorias"
           v-model="frase.categoria"
           label="Categoria"
@@ -12,6 +13,7 @@
 
         <v-text-field label="Frase" v-model="frase.descricao"></v-text-field>
         <v-btn @click="salvar()">Salvar</v-btn>
+        <v-btn @click="cancelarEditar()">Cancelar</v-btn>
       </v-col>
     </v-row>
 
@@ -25,6 +27,23 @@
         </v-data-table>
       </v-col>
     </v-row>
+
+    <v-snackbar v-model="snackbar">
+      {{ mensagem.texto }}
+      <v-btn color="indigo" text @click="snackbar = false">Fechar</v-btn>
+    </v-snackbar>
+
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card>
+        <v-card-title>Confirmação</v-card-title>
+        <v-card-text>Deseja realmente remover o registro?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" @click="cancelarDeletar()">Não</v-btn>
+          <v-btn color="green darken-1" @click="confirmarDeletar()">Sim</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -37,7 +56,11 @@ export default {
       frase: {},
       arrFrases: [],
       arrCategorias: [],
-
+      modoEdicao: false,
+      snackbar: false,
+      mensagem: { texto: "" },
+      dialog: false,
+      itemADeletar: {},
       headers: [
         {
           text: "Categoria",
@@ -61,16 +84,13 @@ export default {
     };
   },
   methods: {
-    salvar() {
-      axios
-        .post("http://localhost:3000/frase", this.frase)
-        .then(response => {
-          this.frase = {};
-          window.alert("Frase salva com sucesso");
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    desejaEditar(item) {
+      this.frase = item;
+      this.modoEdicao = true;
+    },
+    cancelarEditar() {
+      this.frase = {};
+      this.modoEdicao = false;
     },
 
     buscarCategorias() {
@@ -89,6 +109,68 @@ export default {
         .get("http://localhost:3000/frase/comcategoria")
         .then(response => {
           this.arrFrases = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    salvar() {
+      if (this.modoEdicao == true) {
+        //Faz um request PUT pra API
+
+        axios
+          .put("http://localhost:3000/frase", this.frase)
+          .then(response => {
+            this.mensagem.texto = response.data;
+            this.snackbar = true;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+        this.modoEdicao = false;
+      } else {
+        //Faz um request POST pra API
+        axios
+          .post("http://localhost:3000/frase", this.frase)
+          .then(response => {
+            this.mensagem.texto = response.data;
+            this.snackbar = true;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+
+      this.frase = {};
+      this.buscarFrases();
+    },
+
+    desejaDeletar(item) {
+      this.itemADeletar = item;
+      this.dialog = true;
+    },
+
+    cancelarDeletar() {
+      this.dialog = false;
+      this.itemADeletar = {};
+    },
+
+    confirmarDeletar() {
+      this.dialog = false;
+      this.deleteFrase(this.itemADeletar);
+      this.itemADeletar = {};
+    },
+
+    deleteFrase(item) {
+      axios
+        .delete("http://localhost:3000/frase/" + item._id)
+        .then(response => {
+          let index = this.arrFrases.indexOf(item);
+          this.arrFrases.splice(index, 1);
+
+          this.mensagem.texto = response.data;
+          this.snackbar = true;
         })
         .catch(error => {
           console.log(error);

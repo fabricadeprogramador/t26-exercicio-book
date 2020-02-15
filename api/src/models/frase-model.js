@@ -7,7 +7,8 @@ var fraseSchema = new mongoose.Schema({
     },
     categoria: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Categoria'
+        ref: 'Categoria',
+        required: true
     }
 });
 //Criando o modelo 

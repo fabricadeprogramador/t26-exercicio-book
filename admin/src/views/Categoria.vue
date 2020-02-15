@@ -138,6 +138,8 @@ export default {
           .catch(error => {
             console.log(error);
           });
+
+        this.modoEdicao = false;
       } else {
         //cadastrar = POST
         axios
