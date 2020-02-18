@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const categoriaRoutes = require('./src/routes/categoria-routes')
 const fraseRoutes = require('./src/routes/frase-routes')
 const usuarioRoutes = require('./src/routes/usuario-routes')
+const redeSocialRoutes = require('./src/routes/rede-social-routes')
+
 const jwt = require("jsonwebtoken");
 const chavePrivada = "banana nanica"
 const cors = require("cors");
@@ -21,6 +23,7 @@ app.use(cors());
 app.use('/categoria', categoriaRoutes)
 app.use('/frase', fraseRoutes)
 app.use('/usuario', usuarioRoutes)
+app.use('/redesocial', redeSocialRoutes)
 
 //Configurando a porta
 const port = 3000

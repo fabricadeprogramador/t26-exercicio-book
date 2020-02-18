@@ -44,7 +44,8 @@ export default {
           route: "/categoria"
         },
         { title: "Frases", icon: "mdi-card-text-outline", route: "/frase" },
-        { title: "Usuario", icon: "mdi-account", route: "/usuario" }
+        { title: "Usuario", icon: "mdi-account", route: "/usuario" },
+        { title: "Rede Social", icon: "mdi-account", route: "/redesocial" }
       ],
       right: null
     };

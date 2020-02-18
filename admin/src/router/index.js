@@ -17,12 +17,16 @@ const routes = [{
   {
     path: '/categoria',
     name: 'categoria',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Categoria.vue')
+    component: () => import('../views/Categoria.vue')
   },
   {
     path: '/usuario',
     name: 'usuario',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Usuario.vue')
+    component: () => import('../views/Usuario.vue')
+  }, {
+    path: '/redesocial',
+    name: 'redesocial',
+    component: () => import('../views/RedeSocial.vue')
   }
 ]
 
