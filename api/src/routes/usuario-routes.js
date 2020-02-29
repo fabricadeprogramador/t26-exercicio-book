@@ -6,6 +6,9 @@ const UsuarioController = require('../controllers/usuario-controller')
 //Lista Todas de Usuarios
 router.get("/", UsuarioController.listarTodos)
 
+//Buscar por email e senha
+router.get("/buscar", UsuarioController.buscarUsuario)
+
 //Busca por Usuario pelo ID
 router.get("/:id", UsuarioController.buscarPorId)
 

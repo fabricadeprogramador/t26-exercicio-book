@@ -109,7 +109,8 @@ export default {
           this.logado = true;
         })
         .catch(error => {
-          console.log(error);
+          window.alert("Usuário não permitido");
+          console.error(error);
         });
     }
   },

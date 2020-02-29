@@ -6,6 +6,10 @@ const fraseRoutes = require('./src/routes/frase-routes')
 const usuarioRoutes = require('./src/routes/usuario-routes')
 const redeSocialRoutes = require('./src/routes/rede-social-routes')
 
+//Controllers
+const usuarioController = require('./src/controllers/usuario-controller')
+
+
 const jwt = require("jsonwebtoken");
 const chavePrivada = "banana nanica"
 const cors = require("cors");
@@ -45,13 +49,20 @@ db.once('open', function () {
 
 //Código do JWT
 
-app.use("/gerar-token", function (req, res) {
+app.use("/gerar-token", async function (req, res) {
 
-    // JWT
-    var token = jwt.sign(req.body, chavePrivada);
+    let lista = await usuarioController.buscarUsuario(req.body.email, req.body.senha)
+    console.log(lista.length)
+    if (lista != null && lista.length > 0) {
+        // JWT
+        var token = jwt.sign(req.body, chavePrivada);
 
 
-    res.send(token)
+        res.send(token)
+    } else {
+        res.sendStatus(403)
+        res.send("Usuário nao encontrado")
+    }
 
 })
 

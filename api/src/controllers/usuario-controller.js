@@ -7,6 +7,16 @@ class UsuarioController {
         let lista = await usuarioModel.find({})
         res.json(lista)
     }
+    static async buscarUsuario(email, senha) {
+        let filtro = {
+            email: email,
+            senha: senha
+        };
+
+        let lista = await usuarioModel.find(filtro);
+        return lista;
+    }
+
 
     static async buscarPorId(req, res) {
         let usuario = await usuarioModel.findById({
