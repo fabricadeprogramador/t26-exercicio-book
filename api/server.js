@@ -20,10 +20,10 @@ app.use(cors());
 // app.use('/frase', verificarToken, fraseRoutes)
 // app.use('/usuario', verificarToken, usuarioRoutes)
 
-app.use('/categoria', categoriaRoutes)
-app.use('/frase', fraseRoutes)
-app.use('/usuario', usuarioRoutes)
-app.use('/redesocial', redeSocialRoutes)
+app.use('/categoria', verificarToken, categoriaRoutes)
+app.use('/frase', verificarToken, fraseRoutes)
+app.use('/usuario', verificarToken, usuarioRoutes)
+app.use('/redesocial', verificarToken, redeSocialRoutes)
 
 //Configurando a porta
 const port = 3000
