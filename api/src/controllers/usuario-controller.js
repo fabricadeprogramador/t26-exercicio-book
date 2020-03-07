@@ -125,10 +125,7 @@ async function enviarEmail(link, emailUsuario) {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         service: "hotmail",
-        auth: {
-            user: "seu@hotmail.com", // generated ethereal user
-            pass: "seu" // generated ethereal password
-        }
+
     });
 
     // send mail with defined transport object
