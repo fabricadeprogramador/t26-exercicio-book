@@ -62,6 +62,10 @@
         </v-card-actions>
       </v-card>
     </v-container>
+    <v-snackbar v-model="snackbar">
+      {{ mensagem.texto }}
+      <v-btn color="indigo" text @click="snackbar = false">Fechar</v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -71,6 +75,8 @@ export default {
   name: "App",
   data() {
     return {
+      snackbar: false,
+      mensagem: { texto: "" },
       usuario: {},
       logado: false,
       drawer: null,
@@ -109,8 +115,9 @@ export default {
           this.logado = true;
         })
         .catch(error => {
-          window.alert("Usuário não permitido");
-          console.error(error);
+          this.snackbar = true;
+          this.mensagem.texto = "Usuário não permitido";
+          //console.error(error);
         });
     }
   },

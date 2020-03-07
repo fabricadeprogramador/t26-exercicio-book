@@ -29,6 +29,11 @@ app.use('/frase', verificarToken, fraseRoutes)
 app.use('/usuario', verificarToken, usuarioRoutes)
 app.use('/redesocial', verificarToken, redeSocialRoutes)
 
+
+//Rotas livres
+
+app.put("/recuperarsenha", usuarioController.recuperarSenha)
+
 //Configurando a porta
 const port = 3000
 app.listen(port, () => console.log(`Api rodando na porta ${port}!`))

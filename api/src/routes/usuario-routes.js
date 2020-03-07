@@ -19,6 +19,8 @@ router.post("/", UsuarioController.cadastrar)
 //Favoritar frase do Usuario
 router.put("/favoritar", UsuarioController.favoritar)
 
+//router.put("/recuperarsenha", UsuarioController.recuperarSenha)
+
 //Alteração de dados de uma Usuario
 router.put("/", UsuarioController.alterar)
 
