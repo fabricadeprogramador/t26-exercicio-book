@@ -12,19 +12,24 @@ class UsuarioController {
     static async recuperarSenha(req, res) {
 
         //2) Verifica no banco
-        // let filtro = {
-        //     email: req.email
-        // };
+        let filtro = {
+            email: req.email
+        };
 
-        //let lista = await usuarioModel.find(filtro);
+        let lista = await usuarioModel.find(filtro);
+
+        //Acessar o usuario do banco,
+        //Extrair o ID de banco
+        //Chamar o JWT passando o ID
+        //Obter o token
 
         //2) Gerar um Token
-
+        let token = "???"
         //3) Gerar um Link com o token
 
-
+        let link = "http://locahost:8080/recuperar/" + token;
         //4)Enviar o link no email
-        enviarEmail().catch(console.error);
+        enviarEmail(link, email).catch(console.error);
         res.send("OK")
     }
 
@@ -113,7 +118,7 @@ module.exports = UsuarioController;
 
 
 // async..await is not allowed in global scope, must use a wrapper
-async function enviarEmail() {
+async function enviarEmail(link, emailUsuario) {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
 
@@ -121,18 +126,18 @@ async function enviarEmail() {
     let transporter = nodemailer.createTransport({
         service: "hotmail",
         auth: {
-            user: "seuemail@hotmail.com", // generated ethereal user
-            pass: "seusenha" // generated ethereal password
+            user: "seu@hotmail.com", // generated ethereal user
+            pass: "seu" // generated ethereal password
         }
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
         from: 'fabrica.dev@hotmail.com', // sender address
-        to: "virmerson@gmail.com", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>" // html body
+        to: emailUsuario, // list of receivers
+        subject: "Recuperação de Senha ✔", // Subject line
+        text: "Clique no link abaixo para recuperar sua senha:", // plain text body
+        html: "<b>" + link + "</b>" // html body
     });
 
     console.log("Message sent: %s", info.messageId);
