@@ -35,7 +35,7 @@ app.use('/redesocial', verificarToken, redeSocialRoutes)
 //Rotas livres
 
 app.put("/recuperarsenha", usuarioController.recuperarSenha)
-
+app.put("/alterarsenha", usuarioController.alterarSenha)
 //Configurando a porta
 const port = 3000
 app.listen(port, () => console.log(`Api rodando na porta ${port}!`))

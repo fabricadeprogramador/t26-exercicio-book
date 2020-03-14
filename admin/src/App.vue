@@ -58,15 +58,31 @@
         </v-card-text>
         <v-card-actions>
           <v-btn @click="logar()">Logar</v-btn>
-          <v-btn>Lembrar Senha</v-btn>
+          <v-btn @click="lembrar()">Lembrar Senha</v-btn>
         </v-card-actions>
       </v-card>
     </v-container>
 
     <v-container v-if="recuperar">
-      <v-row>
-        <v-col>Recuperar Senha</v-col>
-      </v-row>
+      <v-card>
+        <v-card-title>Recuperar Senha</v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
+              <v-text-field
+                class="pa-2"
+                required
+                label="Senha"
+                v-model="usuario.senha"
+                type="password"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="alterarSenha()">Alterar Senha</v-btn>
+        </v-card-actions>
+      </v-card>
     </v-container>
 
     <v-snackbar v-model="snackbar">
@@ -109,6 +125,37 @@ export default {
       );
     },
 
+    lembrar() {
+      axios
+        .put("http://localhost:3000/recuperarsenha", this.usuario)
+        .then(response => {
+          console.log(response.data);
+          this.mensagem = "Por favor verique sua caixa de e-mail";
+        })
+        .catch(error => {
+          this.snackbar = true;
+          this.mensagem.texto = "Usuário não permitido";
+          //console.error(error);
+        });
+    },
+
+    alterarSenha() {
+      axios
+        .put("http://localhost:3000/alterarsenha", this.usuario)
+        .then(response => {
+          this.mensagem.texto = response.data;
+          this.snackbar = true;
+          this.usuario = {};
+          //vai pro login
+          this.$router.push("/login");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      //enviar o token e a nova senha pra API
+      console.log("Recuperando senha :" + this.$route.params);
+    },
     sair() {
       this.logado = false;
       localStorage.removeItem("user-token");
@@ -127,6 +174,13 @@ export default {
           this.mensagem.texto = "Usuário não permitido";
           //console.error(error);
         });
+    },
+
+    setToken(url) {
+      let arr = (this.tokenUrl = url.split("/"));
+      let token = arr[arr.length - 1];
+      console.log("Sentando Token:" + token);
+      localStorage.setItem("user-token", token);
     }
   },
 
@@ -134,16 +188,18 @@ export default {
     $route(to, from) {
       if (to.path.indexOf("recuperarsenha") != -1) {
         this.recuperar = true;
+        this.setToken(to.path);
       } else {
         this.recuperar = false;
       }
-      console.log("watch:" + to.path);
     }
   },
   created() {
-    console.log("created:" + this.$route.path);
     this.$vuetify.theme.dark = true;
+
     if (this.$route.path.indexOf("recuperarsenha") != -1) {
+      this.setToken(this.$route.path);
+
       this.recuperar = true;
     } else {
       this.recuperar = false;

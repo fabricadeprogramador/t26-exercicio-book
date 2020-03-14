@@ -111,6 +111,39 @@ class UsuarioController {
         res.send("Alterado com sucesso ");
     }
 
+    static async alterarSenha(req, res) {
+
+        if (typeof req.headers.authorization !== "undefined") {
+            //Ler o token
+            var token = req.headers.authorization.split(" ")[1]
+
+            //Valida o token
+            var decoded = jwt.verify(token, chavePrivada);
+
+            //Extrai o id do usário
+            let id = decoded.id;
+
+            //Cria objeto usuario com a nova senha
+            var usuario = {
+                senha: req.body.senha
+            };
+
+            //Altera no banco
+            await usuarioModel.findByIdAndUpdate({
+                    _id: id
+                },
+                usuario
+            );
+
+            //Resposta pro cliente
+            res.send("Senha alterada com sucesso");
+
+        } else {
+            //res.send("Token inixistente")
+            res.sendStatus(403);
+        }
+    }
+
     static async deletar(req, res) {
         const id = req.params.id;
 
