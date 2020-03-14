@@ -12,6 +12,8 @@ const usuarioController = require('./src/controllers/usuario-controller')
 
 const jwt = require("jsonwebtoken");
 const chavePrivada = "banana nanica"
+
+
 const cors = require("cors");
 const app = express()
 app.use(bodyParser.json())

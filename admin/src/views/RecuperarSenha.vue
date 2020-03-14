@@ -6,3 +6,14 @@
 <!-- API acessa dentro do token do ID usuario-->
 <!-- API busca o usuario por ID e modificaa senha e faz update no banco-->
 <!-- API devolve uma mensagem para o client -->
+
+
+<template>
+  <div class="home">
+    <v-container>
+      <v-row>
+        <v-col>Recuperar Senha</v-col>
+      </v-row>
+    </v-container>
+  </div>
+</template>

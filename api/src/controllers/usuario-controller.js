@@ -1,36 +1,50 @@
 const usuarioModel = require("../models/usuario-model");
 const nodemailer = require("nodemailer");
-
-
-
-
-
+const jwt = require("jsonwebtoken");
+const chavePrivada = "banana nanica"
 
 
 
 class UsuarioController {
     static async recuperarSenha(req, res) {
-
-        //2) Verifica no banco
+        // Monta o filtro
         let filtro = {
-            email: req.email
+            email: req.body.email
         };
-
+        //Buscar usuario no banco 
         let lista = await usuarioModel.find(filtro);
 
-        //Acessar o usuario do banco,
-        //Extrair o ID de banco
-        //Chamar o JWT passando o ID
-        //Obter o token
 
-        //2) Gerar um Token
-        let token = "???"
-        //3) Gerar um Link com o token
+        if (lista.length > 0) {
+            let usuarioEncontrado = lista[0];
 
-        let link = "http://locahost:8080/recuperar/" + token;
-        //4)Enviar o link no email
-        enviarEmail(link, email).catch(console.error);
-        res.send("OK")
+            let dadosToken = {
+                id: usuarioEncontrado._id
+            }
+
+            // Gerar um Token
+            let token = jwt.sign(dadosToken, chavePrivada);
+            //3) Gerar um Link com o token
+
+            let link = "http://localhost:8080/#/recuperarsenha/" + token;
+            //4)Enviar o link no email
+            // enviarEmail(link, req.body.email).catch(console.error);
+            res.send(link);
+
+
+        } else {
+
+            res.send("não encontrado")
+        }
+
+        // let dadosToken  = {
+        //     email: 
+        //     _id:
+        // } 
+
+
+
+
     }
 
     static async listarTodos(req, res) {
@@ -110,13 +124,6 @@ class UsuarioController {
 
 module.exports = UsuarioController;
 
-
-
-
-
-
-
-
 // async..await is not allowed in global scope, must use a wrapper
 async function enviarEmail(link, emailUsuario) {
     // Generate test SMTP service account from ethereal.email
@@ -125,16 +132,19 @@ async function enviarEmail(link, emailUsuario) {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         service: "hotmail",
-
+        auth: {
+            user: "fabrica.dev@hotmail.com", // generated ethereal user
+            pass: "" // generated ethereal password
+        }
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-        from: 'fabrica.dev@hotmail.com', // sender address
+        from: "fabrica.dev@hotmail.com", // sender address
         to: emailUsuario, // list of receivers
         subject: "Recuperação de Senha ✔", // Subject line
-        text: "Clique no link abaixo para recuperar sua senha:", // plain text body
-        html: "<b>" + link + "</b>" // html body
+        text: "Clique no link abaixo para recuperar sua senha:" + link, // plain text body
+        html: "<b></b>" // html body
     });
 
     console.log("Message sent: %s", info.messageId);
