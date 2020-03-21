@@ -1,17 +1,10 @@
 <template>
   <v-container>
     <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        />
-      </v-col>
-
-      <v-col class="mb-4">
-        Categoria
+      <v-col v-for="(cat, i) in arrCategorias" :key="i" cols="12">
+        <v-card>
+          <v-card-title v-text="cat.descricao"> </v-card-title>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -23,7 +16,9 @@ import axios from "axios";
 export default {
   name: "Categoria",
 
-  data: () => ({}),
+  data: () => ({
+    arrCategorias: {}
+  }),
   methods: {
     listar() {
       axios
@@ -35,6 +30,9 @@ export default {
           console.log(error);
         });
     }
+  },
+  created() {
+    this.listar();
   }
 };
 </script>
