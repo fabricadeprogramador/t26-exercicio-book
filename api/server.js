@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const categoriaRoutes = require('./src/routes/categoria-routes')
 const categoriaRoutesPub = require('./src/routes/categoria-routes-pub')
 const fraseRoutes = require('./src/routes/frase-routes')
+const fraseRoutesPub = require('./src/routes/frase-routes-pub')
+
 const usuarioRoutes = require('./src/routes/usuario-routes')
 const redeSocialRoutes = require('./src/routes/rede-social-routes')
 
@@ -27,17 +29,20 @@ app.use(cors());
 // app.use('/frase', verificarToken, fraseRoutes)
 // app.use('/usuario', verificarToken, usuarioRoutes)
 
+//Privadas
 app.use('/categoria', verificarToken, categoriaRoutes)
 app.use('/frase', verificarToken, fraseRoutes)
 app.use('/usuario', verificarToken, usuarioRoutes)
 app.use('/redesocial', verificarToken, redeSocialRoutes)
+
+//# Publicas
 app.use('/public/categoria', categoriaRoutesPub)
-
-
-//Rotas livres
-
+app.use('/public/frase', fraseRoutesPub)
+//TODO: adicionar /public na frente  
 app.put("/recuperarsenha", usuarioController.recuperarSenha)
 app.put("/alterarsenha", usuarioController.alterarSenha)
+
+
 //Configurando a porta
 const port = 3000
 app.listen(port, () => console.log(`Api rodando na porta ${port}!`))
