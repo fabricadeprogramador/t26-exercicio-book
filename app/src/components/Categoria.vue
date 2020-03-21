@@ -18,9 +18,23 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Categoria",
 
-  data: () => ({})
+  data: () => ({}),
+  methods: {
+    listar() {
+      axios
+        .get("http://localhost:3000/public/categoria")
+        .then(response => {
+          this.arrCategorias = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
 };
 </script>
