@@ -1,5 +1,5 @@
 .DS_Store
 .vscode/
-admin/node_modules/
-api/node_modules/ 
-api/src/controllers/usuario-controller.js
+admin/node_modules
+api/node_modules
+app/node_modules

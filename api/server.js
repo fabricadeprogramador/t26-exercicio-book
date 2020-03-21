@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const categoriaRoutes = require('./src/routes/categoria-routes')
+const categoriaRoutesPub = require('./src/routes/categoria-routes-pub')
 const fraseRoutes = require('./src/routes/frase-routes')
 const usuarioRoutes = require('./src/routes/usuario-routes')
 const redeSocialRoutes = require('./src/routes/rede-social-routes')
@@ -30,6 +31,7 @@ app.use('/categoria', verificarToken, categoriaRoutes)
 app.use('/frase', verificarToken, fraseRoutes)
 app.use('/usuario', verificarToken, usuarioRoutes)
 app.use('/redesocial', verificarToken, redeSocialRoutes)
+app.use('/public/categoria', categoriaRoutesPub)
 
 
 //Rotas livres

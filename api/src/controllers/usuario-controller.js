@@ -167,7 +167,7 @@ async function enviarEmail(link, emailUsuario) {
         service: "hotmail",
         auth: {
             user: "fabrica.dev@hotmail.com", // generated ethereal user
-            pass: "" // generated ethereal password
+            pass: "Fabrica#2020" // generated ethereal password
         }
     });
 
