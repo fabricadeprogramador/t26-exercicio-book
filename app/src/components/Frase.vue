@@ -3,7 +3,7 @@
     <v-row class="text-center">
       <v-col v-for="(fra, i) in arrFrases" :key="i" cols="12">
         <v-card>
-          <v-card-title v-text="fra.descricao"> </v-card-title>
+          <v-card-title v-text="fra.descricao"></v-card-title>
         </v-card>
       </v-col>
     </v-row>
@@ -17,12 +17,14 @@ export default {
   name: "Frase",
 
   data: () => ({
-    arrFrase: {}
+    arrFrase: {},
+    urlApi: "http://localhost:3000/",
+    urlApi2: "https://book-phase-api.herokuapp.com/"
   }),
   methods: {
     listar() {
       axios
-        .get("http://localhost:3000/public/frase")
+        .get(this.urlApi2 + "/public/frase")
         .then(response => {
           this.arrFrases = response.data;
         })

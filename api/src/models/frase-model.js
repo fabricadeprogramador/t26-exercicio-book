@@ -5,6 +5,12 @@ var fraseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
+    descricaoPt: {
+        type: String,
+        required: true
+    },
+
     categoria: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Categoria',

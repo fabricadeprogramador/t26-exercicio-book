@@ -11,7 +11,8 @@
           label="Categoria"
         ></v-select>
 
-        <v-text-field label="Frase" v-model="frase.descricao"></v-text-field>
+        <v-text-field label="EN" v-model="frase.descricao"></v-text-field>
+        <v-text-field label="PT" v-model="frase.descricaoPt"></v-text-field>
         <v-btn @click="salvar()">Salvar</v-btn>
         <v-btn @click="cancelarEditar()">Cancelar</v-btn>
       </v-col>
@@ -69,10 +70,16 @@ export default {
           value: "categoria.descricao"
         },
         {
-          text: "Descrição",
+          text: "Descrição EN",
           align: "left",
           sortable: true,
           value: "descricao"
+        },
+        {
+          text: "Descrição PT",
+          align: "left",
+          sortable: true,
+          value: "descricaoPt"
         },
         {
           text: "Ações",
